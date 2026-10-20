@@ -1,13 +1,13 @@
 #import "shared.h"
 #import "ABSManager.h"
-#import <Cephei/HBPreferences.h>
+#import "ABSPreferences.h"
 #import "ABSModernNative.h"
 
-HBPreferences* preferences;
+ABSPreferences* preferences;
 BKSLocalDefaults* backboardDefaults = [%c(BKSLocalDefaults) new];
 
 static void didFinishLaunching(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef info) {
-	preferences = [[HBPreferences alloc] initWithIdentifier:@"com.jschiefner.advancedbrightnesssliderpreferences"];
+	preferences = [[ABSPreferences alloc] initWithIdentifier:@"com.jschiefner.advancedbrightnesssliderpreferences"];
 	[preferences registerDefaults:@{@"enabled":@YES, @"threshold":@30.0f}];
 	// Never initialize legacy slider/manager groups on the new native architecture.
 	if (NSProcessInfo.processInfo.operatingSystemVersion.majorVersion >= 17) {

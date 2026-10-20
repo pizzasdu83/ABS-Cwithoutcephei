@@ -1,7 +1,7 @@
 // Adapter for AdvancedBrightnessSlider by Jonas Schiefner; experimental iOS 26.0.1 admission.
 // GPL-3.0; preserve the original attribution and API credits in README.md/ABSManager.xm.
 #import <UIKit/UIKit.h>
-#import <Cephei/HBPreferences.h>
+#import "ABSPreferences.h"
 #import <objc/runtime.h>
 #import <sys/sysctl.h>
 #import "ABSModernNative.h"
@@ -79,7 +79,7 @@ static BOOL sameWhitePoint(ABSWhitePointState a, ABSWhitePointState b) {
 @property (nonatomic) BOOL ownsWhitePoint;
 @property (nonatomic) ABSWhitePointState beforeWhitePoint;
 @property (nonatomic) ABSWhitePointState lastWhitePoint;
-@property (nonatomic, strong) HBPreferences *preferences;
+@property (nonatomic, strong) ABSPreferences *preferences;
 @property (nonatomic) BOOL modifyAutoBrightness;
 @property (nonatomic) BOOL extraDimming;
 @property (nonatomic) BOOL ownsAutoBrightness;
@@ -97,7 +97,7 @@ static BOOL sameWhitePoint(ABSWhitePointState a, ABSWhitePointState b) {
 - (void)updateAutoBrightnessForExtraDimming:(BOOL)extraDimming;
 - (void)autoBrightnessChanged;
 - (void)scheduleRefresh;
-- (void)configure:(HBPreferences *)preferences;
+- (void)configure:(ABSPreferences *)preferences;
 @end
 
 static ABSModernAdapter *adapter;
@@ -233,7 +233,7 @@ static ABSModernAdapter *adapter;
     });
 }
 
-- (void)configure:(HBPreferences *)preferences {
+- (void)configure:(ABSPreferences *)preferences {
     self.preferences = preferences;
     if ([preferences objectForKey:@"modifyAutoBrightness"] == nil) {
         BOOL actual;
@@ -365,7 +365,7 @@ static void modernAutoBrightnessChanged(CFNotificationCenterRef center, void *ob
 %end
 %end
 
-extern "C" void initModernNative(HBPreferences *preferences) {
+extern "C" void initModernNative(ABSPreferences *preferences) {
     if (!supportedBuild()) return;
     Class controller = NSClassFromString(@"CCUIDisplayModuleViewController");
     for (NSString *name in @[@"_setBacklightLevel:", @"_updateWithCurrentBrightnessAnimated:",

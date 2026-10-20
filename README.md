@@ -1,3 +1,9 @@
+# AdvancedBrightnessSlider Continued without Cephei tweak library
+
+I made this cus cephei tweak library can cause problems, especially, on ios 26.
+
+
+
 # AdvancedBrightnessSlider Continued
 
 **Go beyond minimum brightness.**
@@ -8,7 +14,7 @@ Reduce White Point dims the screen further while brightness stays at minimum.
 
 Start with the default 30% split, or open **AdvancedBrightnessSlider Continued**
 in Settings and adjust **Threshold**. Threshold changes apply automatically.
-The Settings pane requires **PreferenceLoader** and **Cephei Tweak Support**.
+The Settings pane requires **PreferenceLoader**.
 
 An independently maintained compatibility fork of **Jonas Schiefner's
 AdvancedBrightnessSlider**, maintained by **0chium**. Free and GPL-3.0 licensed.
@@ -32,12 +38,12 @@ not a donation to 0chium, and no upstream endorsement is implied.
 
 ## Build-specific compatibility
 
-| Device | Exact version/build | Evidence |
-| --- | --- | --- |
-| iPhone 14 Pro | 17.0 / 21A329 | Owner reports working mapping and threshold preferences. |
-| iPhone 11 Pro Max | 18.3.2 / 22D82 | Owner reports functional success and successful Sileo replacement of the old package, with the threshold preserved. |
-| iPhone SE 2 | 18.2 / 22C152 | Statically investigated and admitted by the guard; runtime untested for this update. |
-| iPhone SE (2nd generation) | 26.0.1 / 23A355 | Owner reports working brightness mapping with 1.2.2-1+abs26exp.1. The 1.2.3-1 release reuses its complete installed payload unchanged. |
+| Device                     | Exact version/build | Evidence                                                                                                                               |
+| -------------------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| iPhone 14 Pro              | 17.0 / 21A329       | Owner reports working mapping and threshold preferences.                                                                               |
+| iPhone 11 Pro Max          | 18.3.2 / 22D82      | Owner reports functional success and successful Sileo replacement of the old package, with the threshold preserved.                    |
+| iPhone SE 2                | 18.2 / 22C152       | Statically investigated and admitted by the guard; runtime untested for this update.                                                   |
+| iPhone SE (2nd generation) | 26.0.1 / 23A355     | Owner reports working brightness mapping with 1.2.2-1+abs26exp.1. The 1.2.3-1 release reuses its complete installed payload unchanged. |
 
 These are specific owner reports, not comprehensive compatibility certification
 or blanket support for iOS 17, 18 or 26. Other modern builds, including other

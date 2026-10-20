@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install tools
+        run: brew install ldid dpkg xz
+
+      - name: Setup Theos
+        run: |
+          git clone --recursive --depth=1 https://github.com/theos/theos.git "$GITHUB_WORKSPACE/theos"
+          echo "THEOS=$GITHUB_WORKSPACE/theos" >> "$GITHUB_ENV"
+
+      - name: Setup SDKs
+        run: |
+          git clone --depth=1 https://github.com/theos/sdks.git "$RUNNER_TEMP/sdks"
+          cp -R "$RUNNER_TEMP"/sdks/*.sdk "$GITHUB_WORKSPACE/theos/sdks/"
+          ls "$GITHUB_WORKSPACE/theos/sdks/"
+
+      - name: Build rootless package
+        run: |
+          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1 \
+            TARGET=iphone:clang:15.6:15.0 'ARCHS=arm64 arm64e'
+
+      - name: Upload package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package
+          path: packages/*.deb

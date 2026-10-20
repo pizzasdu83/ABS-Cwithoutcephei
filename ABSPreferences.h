@@ -1,0 +1,14 @@
+// Remplaçant minimal de HBPreferences (Cephei) — aucune dépendance externe.
+#import <Foundation/Foundation.h>
+
+typedef void (^ABSPreferencesChangeBlock)(NSString *key, id<NSCopying> _Nullable value);
+
+@interface ABSPreferences : NSObject
+- (instancetype)initWithIdentifier:(NSString *)identifier;
+- (void)registerDefaults:(NSDictionary *)defaults;
+- (id)objectForKey:(NSString *)key;
+- (BOOL)boolForKey:(NSString *)key;
+- (float)floatForKey:(NSString *)key;
+- (void)setBool:(BOOL)value forKey:(NSString *)key;
+- (void)registerPreferenceChangeBlockForKey:(NSString *)key block:(ABSPreferencesChangeBlock)block;
+@end

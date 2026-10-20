@@ -6,7 +6,7 @@ Description: Go beyond minimum brightness.
 Maintainer: 0chium
 Author: Jonas Schiefner
 Section: Tweaks
-Depends: mobilesubstrate (>= 0.9.5000), ws.hbang.common (>= 1.17)
+Depends: mobilesubstrate (>= 0.9.5000)
 Conflicts: com.jschiefner.advancedbrightnessslider
 Replaces: com.jschiefner.advancedbrightnessslider
 Homepage: https://github.com/0chium/AdvancedBrightnessSlider-Continued
