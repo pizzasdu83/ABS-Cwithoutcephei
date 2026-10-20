@@ -1,40 +1,42 @@
-name: Build
+name: Burning the tweak
 
 on:
-  push:
-  pull_request:
   workflow_dispatch:
+  push:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
-          submodules: recursive
+          submodules: true
 
-      - name: Install tools
-        run: brew install ldid dpkg xz
-
-      - name: Setup Theos
+      - name: Check cache
         run: |
-          git clone --recursive --depth=1 https://github.com/theos/theos.git "$GITHUB_WORKSPACE/theos"
-          echo "THEOS=$GITHUB_WORKSPACE/theos" >> "$GITHUB_ENV"
+          echo upstream_heads=`git ls-remote https://github.com/theos/theos | head -n 1 | cut -f 1`-`git ls-remote https://github.com/theos/sdks | head -n 1 | cut -f 1` >> $GITHUB_ENV
 
-      - name: Setup SDKs
-        run: |
-          git clone --depth=1 https://github.com/theos/sdks.git "$RUNNER_TEMP/sdks"
-          cp -R "$RUNNER_TEMP"/sdks/*.sdk "$GITHUB_WORKSPACE/theos/sdks/"
-          ls "$GITHUB_WORKSPACE/theos/sdks/"
+      - name: Use cache
+        id: cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ github.workspace }}/theos
+          key: ${{ runner.os }}-${{ env.upstream_heads }}
 
-      - name: Build rootless package
+      - name: Prepare Theos
+        uses: Randomblock1/theos-action@v1
+
+      - name: Build package
         run: |
-          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1 \
-            TARGET=iphone:clang:15.6:15.0 'ARCHS=arm64 arm64e'
+          rm -f packages/*
+          make package THEOS_PACKAGE_SCHEME=rootless FINALPACKAGE=1 TARGET=iphone:clang:15.6:15.0
 
       - name: Upload package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
-          name: Package
-          path: packages/*.deb
+          name: "Package built by ${{ matrix.os }}"
+          path: ${{ github.workspace }}/packages/*.deb
